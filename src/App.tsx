@@ -287,9 +287,9 @@ export function App() {
                 <div className="flow-box core">MLS4RN · MlsClient · Group</div>
                 <div className="flow-arrow">↓</div>
                 <div className="flow-targets">
-                  <div className="flow-box">Node</div>
-                  <div className="flow-box">Browser</div>
                   <div className="flow-box">React Native</div>
+                  <div className="flow-box">Browser</div>
+                  <div className="flow-box">Node</div>
                 </div>
                 <div className="flow-arrow">↓</div>
                 <div className="flow-box base">OpenMLS · Rust → WebAssembly</div>
