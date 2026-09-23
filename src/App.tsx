@@ -275,7 +275,7 @@ export function App() {
             <h2 className="section-title">One API on top of proven crypto</h2>
             <p className="section-lead">
               You write against a small, typed API. Underneath, it runs OpenMLS, the audited Rust
-              implementation of MLS, compiled to WebAssembly. No cryptography is rewritten in JavaScript.
+              implementation of MLS, compiled to WebAssembly.
             </p>
           </div>
           <div className="how-grid">
