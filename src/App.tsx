@@ -326,7 +326,7 @@ export function App() {
                 <li>
                   <Check />
                   <div>
-                    <b>Any file, any size.</b> Documents, images, PDFs, backups. It is all just bytes.
+                    <b>Any file type.</b> Documents, images, PDFs, backups. It is all just bytes.
                   </div>
                 </li>
                 <li>
