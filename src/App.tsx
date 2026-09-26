@@ -96,7 +96,10 @@ function FilesCode() {
         {"\n"}
         <span className="k">const</span> file = <span className="k">await</span> <span className="f">open</span>(
         {"\n"}
-        {"  "}group.<span className="f">exportKey</span>(<span className="s">"file-share"</span>, fileId, 32), blob){"\n"}
+        {"  "}group.<span className="f">exportKey</span>(<span className="s">"file-share"</span>, fileId, 32),
+        {"\n"}
+        {"  "}blob,
+        {"\n"}
         )
       </pre>
     </div>
