@@ -5,8 +5,8 @@ import react from "@vitejs/plugin-react";
 // Excluding it from dep pre-bundling lets Vite emit and resolve that wasm asset
 // correctly in both dev and the production build.
 export default defineConfig({
-  // Served from https://umerjaved178.github.io/MLS4RN-website/ on GitHub Pages.
-  base: "/MLS4RN-website/",
+  // Served from the custom domain https://mls4rn.dev/ (root).
+  base: "/",
   plugins: [react()],
   optimizeDeps: { exclude: ["mls-ts"] },
 });
