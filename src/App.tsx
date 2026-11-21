@@ -168,6 +168,9 @@ export function App() {
             <a className="navlink" href="#install">
               Install
             </a>
+            <a className="navlink" href="/docs/">
+              Docs
+            </a>
             <a className="btn btn-ghost" href={GITHUB} target="_blank" rel="noreferrer">
               GitHub
             </a>
@@ -520,6 +523,9 @@ export function App() {
             <a className="btn btn-ghost" href={NPM_TS} target="_blank" rel="noreferrer">
               Get mls-ts for web and Node
             </a>
+            <a className="btn btn-ghost" href="/docs/">
+              Read the docs
+            </a>
           </div>
         </div>
       </section>
@@ -532,6 +538,7 @@ export function App() {
               mls4rn
             </a>
             <div className="footer-links">
+              <a href="/docs/">Docs</a>
               <a href={NPM_TS} target="_blank" rel="noreferrer">
                 mls-ts
               </a>

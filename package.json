@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "docs:dev": "vitepress dev docs",
+    "build": "vite build && vitepress build docs && rm -rf dist/docs && cp -r docs/.vitepress/dist dist/docs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "typescript": "^5.7.2",
-    "vite": "^5.4.11"
+    "vite": "^5.4.11",
+    "vitepress": "^1.6.4"
   }
 }
