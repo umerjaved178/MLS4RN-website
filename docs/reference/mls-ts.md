@@ -262,6 +262,26 @@ new IndexedDBStorageAdapter(options?: { dbName?: string; storeName?: string })
 
 Browser-only. Persists snapshots in an IndexedDB object store so a session survives a page reload. Defaults: `dbName` `"mls-ts"`, `storeName` `"snapshots"`.
 
+### EncryptedStorageAdapter
+
+```ts
+new EncryptedStorageAdapter(
+  inner: StorageAdapter,
+  passphrase: string | Uint8Array,
+  options?: { iterations?: number },
+)
+```
+
+Wraps another adapter and encrypts every snapshot at rest with AES-256-GCM, under a key derived from `passphrase` with PBKDF2-SHA-256 (default 210,000 iterations). The inner adapter only ever stores ciphertext. Decryption with the wrong passphrase, or on tampered bytes, throws a `SnapshotError`. It uses the Web Crypto API, so the one wrapper works on Node (18+) and in the browser.
+
+```ts
+const adapter = new EncryptedStorageAdapter(
+  new FileStorageAdapter("./data"),
+  process.env.MLS_PASSPHRASE!,
+);
+const client = await MlsClient.open("alice", adapter);
+```
+
 ## Helpers
 
 ```ts

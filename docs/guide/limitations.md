@@ -24,14 +24,14 @@ You can add, remove, update, leave, and batch proposals. What is not implemented
 
 - Without an adapter, clients are in-memory and forget everything on exit.
 - With an adapter, each `save()` writes a full snapshot, not an incremental update.
-- Snapshots hold private keys **unencrypted at rest** unless your adapter encrypts them.
+- The shipped file and IndexedDB adapters write snapshots in the clear. Private keys are only protected at rest if you wrap them, which the shipped `EncryptedStorageAdapter` does (AES-256-GCM under a passphrase).
 - Only a Node file adapter and a browser IndexedDB adapter ship today.
 
 See [Saving sessions](./persistence) for how to handle this safely.
 
-## Error handling is rough
+## Error handling
 
-Malformed input to `receive()` currently surfaces as a thrown WebAssembly error rather than a clean, typed error you can branch on. Typed errors are a planned hardening item. For now, wrap `receive` in a `try/catch` and treat a throw as "bad or unexpected message."
+Bad input is caught at the facade and rethrown as a typed, catchable error (`InvalidMessageError`, `InvalidKeyPackageError`, and so on, all extending `MlsError`), with the original wasm error kept on `.cause`. One deeper gap remains: a genuinely malformed message can still panic the underlying WebAssembly instance before the facade wraps the error. Making that boundary panic-free needs a change in the Rust layer and is still tracked.
 
 ## File size limits
 
@@ -56,6 +56,6 @@ The larger items being tracked, beyond the hardening above:
 - External joins.
 - Multiple ciphersuites.
 - A native React Native path, to lift the bridge size limit.
-- Encrypted-at-rest storage out of the box.
-- Typed errors.
-- A written threat model and a documentation pass.
+- A panic-free wasm boundary, so malformed input can never leave the instance unusable.
+- Authenticated identities, so a key package can be tied to a verified account.
+- Transcript consistency across all members.

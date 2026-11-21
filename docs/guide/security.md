@@ -33,7 +33,7 @@ A key package is just bytes. The SDK does not verify that Bob's key package actu
 
 ### Protecting keys at rest
 
-With [persistence](./persistence) enabled, snapshots contain private key material and are written unencrypted by the shipped adapters. On a device where storage is not already protected, wrap your adapter so it encrypts bytes before saving and decrypts after loading. Treat an unencrypted snapshot the same way you would treat a plaintext private key file.
+With [persistence](./persistence) enabled, snapshots contain private key material. The plain file and IndexedDB adapters write it unencrypted, so on a device where storage is not already protected, wrap them in the shipped `EncryptedStorageAdapter`, which encrypts snapshots with AES-256-GCM under a passphrase you supply. Treat an unencrypted snapshot the same way you would treat a plaintext private key file.
 
 ### Transport integrity and availability
 
@@ -49,4 +49,4 @@ Please do not open a public issue for a security problem. The repository's `SECU
 
 ## Honest status
 
-MLS4RN is a functional prototype. The cryptography comes from a mature upstream implementation, but the surrounding SDK has not been through a security audit, the API still changes between versions, and several hardening items (encrypted-at-rest storage, typed error handling, a written threat model) are still in progress. Weigh that before using it for anything where a failure would be costly. See [Limitations](./limitations) for the specifics.
+MLS4RN is a functional prototype. The cryptography comes from a mature upstream implementation, and recent hardening added encrypted-at-rest storage, typed error handling, a written threat model, and auth and rate limiting on the reference server. The surrounding SDK has not yet been through an independent security audit, the API still changes between versions, and some items remain in progress: a panic-free wasm boundary, authenticated identities, and transcript consistency. Weigh that before using it for anything where a failure would be costly. See [Limitations](./limitations) for the specifics.

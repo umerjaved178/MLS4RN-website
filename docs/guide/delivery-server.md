@@ -56,4 +56,4 @@ You do not have to use this server. Anything that can store and forward byte arr
 
 ## Status
 
-The reference server stores state in memory, so it is lost on restart, and it has no authentication or rate limiting. A production deployment would add durable storage, authentication, and a way to verify member credentials. See the [server reference](/reference/server) for the full endpoint details.
+The reference server now supports opt-in durable storage (point it at a data directory), bearer-token auth, and HTTP rate limiting, all through environment variables and off by default so the demo still runs with no setup. The remaining production gaps are a real database in place of the JSON-file store and an authentication service that ties a token to a verified identity. See the [server reference](/reference/server) for the full endpoint details and configuration.

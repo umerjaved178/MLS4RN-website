@@ -81,7 +81,7 @@ Anything that can store and return bytes by key works: a different database, a c
 Persistence today is deliberately simple, and that simplicity has consequences worth knowing:
 
 - **Snapshots are full, not incremental.** Each `save()` writes a complete snapshot of the client's state. It is easy to reason about, not optimized for huge state.
-- **Private keys are stored unencrypted at rest.** A snapshot contains the client's secret key material. The shipped adapters write it as-is. If the storage medium is not itself protected, wrap your adapter to encrypt the bytes before `save` and decrypt them after `load`. This is the single most important thing to get right before putting persistence in production.
-- **Only the Node file adapter and the browser IndexedDB adapter ship today.** Other platforms supply their own, as above.
+- **Encrypt keys at rest.** A snapshot contains the client's secret key material, and the plain file and IndexedDB adapters write it as-is. Wrap them in the shipped `EncryptedStorageAdapter`, which encrypts snapshots with AES-256-GCM under a passphrase, before `save` and after `load` for you. Doing this on any device whose storage is not otherwise protected is the single most important thing to get right before putting persistence in production.
+- **Only the Node file adapter and the browser IndexedDB adapter ship today** (plus the `EncryptedStorageAdapter` wrapper, which works on both). Other platforms supply their own, as above.
 
 See the [Security model](./security) for how storage fits into the overall threat picture.

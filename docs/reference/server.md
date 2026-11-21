@@ -3,7 +3,7 @@
 The reference delivery service, in `packages/server`. It is a NestJS app that acts as a blind relay: it stores and forwards opaque bytes and never parses or decrypts anything. For the concepts and how it lines up with the SDK, see [The delivery server](/guide/delivery-server).
 
 ::: warning
-This is a reference implementation. Storage is in memory (lost on restart) and there is no authentication or rate limiting. It demonstrates the contract, not a production deployment.
+This is a reference implementation. It now has opt-in durable storage, bearer-token auth, and HTTP rate limiting (all off by default), but the JSON-file store and simple token auth are not a substitute for a real database and an identity service. It demonstrates the contract, not a production deployment.
 :::
 
 ## Run
@@ -14,6 +14,20 @@ npm install
 npm run build
 npm start          # http://localhost:3000  (set PORT to change)
 ```
+
+## Configuration
+
+All optional, through environment variables. With none set, the server runs in memory and unauthenticated.
+
+| Variable | Effect |
+| --- | --- |
+| `PORT` | HTTP port (default `3000`). |
+| `MLS_DATA_DIR` | Persist each collection to JSON files here and reload on start, so state survives a restart. Unset means in-memory only. |
+| `MLS_API_TOKENS` | Comma-separated bearer tokens. When set, every HTTP request must send `Authorization: Bearer <token>`, or it gets `401`. Unset disables auth. |
+| `MLS_RATE_LIMIT` | Requests per window, per client (default `300`). |
+| `MLS_RATE_TTL` | Rate-limit window in milliseconds (default `60000`). |
+
+Auth and rate limiting apply to the HTTP endpoints; the WebSocket gateway is left to relay bytes.
 
 ## HTTP endpoints
 
@@ -55,14 +69,14 @@ Over Socket.IO, a client emits `subscribe` with `{ groupId }` and then receives 
 npm test
 ```
 
-The end-to-end suite boots the server and runs a real two-client MLS conversation through it using `mls-ts`: publish and claim a key package, add a member, relay the welcome and commit, then send and decrypt an application message. It also covers ordering, the welcome inbox, and WebSocket push.
+The end-to-end suite boots the server and runs a real two-client MLS conversation through it using `mls-ts`: publish and claim a key package, add a member, relay the welcome and commit, then send and decrypt an application message. It also covers ordering, the welcome inbox, WebSocket push, auth, rate limiting, and durable storage across a restart.
 
 ## Toward production
 
-A real deployment of this contract would add, at least:
+Durable storage, auth, and rate limiting are already here (see Configuration). A real deployment would still add, at least:
 
-- durable storage in place of the in-memory maps,
-- authentication and rate limiting,
-- a way to verify member credentials (so a published key package can be tied to a real, verified account).
+- a real database in place of the JSON-file store,
+- an authentication service that ties a token to a verified identity (so a published key package can be tied to a real account),
+- TLS in front of the HTTP and WebSocket endpoints.
 
-See the [Security model](/guide/security) for why that last point matters and what the SDK does and does not cover.
+See the [Security model](/guide/security) for why the identity point matters and what the SDK does and does not cover.
